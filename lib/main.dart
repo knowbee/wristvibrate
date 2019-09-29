@@ -1,111 +1,506 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.green, // navigation bar color
+    statusBarColor: Colors.green, // status bar color
+  ));
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  runApp(VibratingApp());
+}
+
+class VibratingApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+  _VibratingAppState createState() => _VibratingAppState();
+}
+
+class _VibratingAppState extends State<VibratingApp> {
+  bool _canVibrate = true;
+
+  @override
+  initState() {
+    super.initState();
+    init();
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+  init() async {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _canVibrate
+          ? print("This device can vibrate")
+          : print("This device cannot vibrate");
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: const Text('WristAble Vibrations (Patterns)'),
+        ),
+        body: Center(
+          child: ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text("Normal"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate();
+                      },
+              ),
+              ListTile(
+                title: Text("10 x 133 (60)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                          133,
+                          60,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("Short"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("Long"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          500,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 250 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                          125,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 400 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          125,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 400 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          250,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 600 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          500,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 600 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          250,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("2 x 800 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          800,
+                          500,
+                          800,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 250 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                          125,
+                          250,
+                          125,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 250 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                          250,
+                          250,
+                          250,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 400 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          125,
+                          400,
+                          125,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 400 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          250,
+                          400,
+                          250,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 600 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          500,
+                          600,
+                          500,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 600 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          250,
+                          600,
+                          250,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("3 x 800 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          800,
+                          500,
+                          800,
+                          500,
+                          800,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 250 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                          125,
+                          250,
+                          125,
+                          250,
+                          125,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 250 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          250,
+                          250,
+                          250,
+                          250,
+                          250,
+                          250,
+                          250,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 400 (125)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          125,
+                          400,
+                          125,
+                          400,
+                          125,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 400 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          400,
+                          250,
+                          400,
+                          250,
+                          400,
+                          250,
+                          400,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 600 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          500,
+                          600,
+                          500,
+                          600,
+                          500,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 600 (250)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          600,
+                          250,
+                          600,
+                          250,
+                          600,
+                          250,
+                          600,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("4 x 800 (500)"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          800,
+                          500,
+                          800,
+                          500,
+                          800,
+                          500,
+                          800,
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("230,250,215,250,200,250,185,250,160"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          230,
+                          250,
+                          215,
+                          250,
+                          200,
+                          250,
+                          185,
+                          250,
+                          160
+                        ]);
+                      },
+              ),
+              ListTile(
+                title: Text("500,500,250,500,500,500,250,500,500"),
+                leading: Icon(Icons.vibration, color: Colors.orange),
+                onTap: !_canVibrate
+                    ? null
+                    : () {
+                        Vibration.vibrate(pattern: [
+                          0,
+                          500,
+                          500,
+                          250,
+                          500,
+                          500,
+                          500,
+                          250,
+                          500,
+                          500
+                        ]);
+                      },
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// RaisedButton(
+//                     child: Text('Vibrate for default 500ms'),
+//                     onPressed: () {
+//                       Vibration.vibrate();
+//                     },
+//                   ),
+//                   RaisedButton(
+//                     child: Text('Vibrate for 1000ms'),
+//                     onPressed: () {
+//                       Vibration.vibrate(duration: 1000);
+//                     },
+//                   ),
+//                   RaisedButton(
+//                     child: Text('Vibrate with pattern'),
+//                     onPressed: () {
+//                       final snackBar = SnackBar(
+//                         content: Text(
+//                             'Pattern: wait 0.5s, vibrate 1s, wait 0.5s, vibrate 2s, wait 0.5s, vibrate 3s, wait 0.5s, vibrate 0.5s'),
+//                       );
+
+//                       Scaffold.of(context).showSnackBar(snackBar);
+//                       Vibration.vibrate(
+//                           pattern: [500, 1000, 500, 2000, 500, 3000, 500, 500]);
+//                     },
+//                   )

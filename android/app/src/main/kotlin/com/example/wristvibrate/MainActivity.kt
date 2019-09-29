@@ -1,4 +1,4 @@
-package com.example.wristvibrate
+package com.knowbee.wristvibrate
 
 import android.os.Bundle
 
